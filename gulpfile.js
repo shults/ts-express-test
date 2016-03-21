@@ -10,9 +10,17 @@ const
 
 const config = {
   compilerOptions: {
-    'target': 'es5',
+    //'target': 'es5',
+    target: {
+      "rest": "ES5",
+      "spread": "ES5",
+      "decorators": "ES5",
+      "generators": "ES5"
+    },
     'module': 'commonjs',
-    'sourceMap': false
+    'sourceMap': false,
+    experimentalDecorators: true,
+    emitDecoratorMetadata: true
   },
   src: {
     filesGlob: [
@@ -20,7 +28,7 @@ const config = {
       'src/**/*.ts'
     ]
   }
-}
+};
 
 gulp.task('watch', ['tsconfig:watch']);
 
@@ -28,11 +36,11 @@ gulp.task('ts', function() {
   return gulp.src(['src/**/*.ts'])
     .pipe(ts(config.compilerOptions))
     .pipe(gulp.dest('./dist'))
-})
+});
 
-gulp.task('dist:clean', function(done) {
-  del('./dist').then(() => done(), done)
-})
+gulp.task('dist:clean', function() {
+  return del('./dist');
+});
 
 gulp.task('tsconfig', function() {
   var tsConfig = tsconfig({
@@ -50,7 +58,7 @@ gulp.task('tsconfig', function() {
   return gulp.src(config.src.filesGlob)
     .pipe(tsConfig())
     .pipe(gulp.dest('.'));
-})
+});
 
 gulp.task('tsconfig:watch', ['tsconfig'], function () {
   gulp.watch(config.src.tsFilesGlob, ['tsconfig']);
@@ -62,7 +70,7 @@ gulp.task('compile', function(done) {
     'ts',
     done
   )
-})
+});
 
 
 gulp.task('server', function(done) {
@@ -70,13 +78,10 @@ gulp.task('server', function(done) {
     'dist:clean',
     'compile',
     function(err) {
-      // console.log(err)
-      // if (err) return done(err);
-      //
-      server.run(['dist/server.js'])
+      server.run(['dist/server.js']);
       
-      gulp.watch(['dist/**/*'], server.run)
-      gulp.watch(['src/**/*.ts'], ['compile'])
+      gulp.watch(['dist/**/*'], server.run);
+      gulp.watch(['src/**/*.ts'], ['compile']);
     }
   )
-})
+});

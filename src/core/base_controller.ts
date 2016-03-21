@@ -1,10 +1,8 @@
-import express = require('express');
+import express = require('express')
 
 abstract class BaseController implements server.core.IAbstractController {
 
-  constructor(
-    private app:express.Application
-  ) {}
+  constructor(protected app:express.Application) {}
 
   registerCallbacks() : void {
     this.methods().forEach((cnf : server.core.IControllerConfig) => {
@@ -14,7 +12,7 @@ abstract class BaseController implements server.core.IAbstractController {
     })
   }
 
-  private wrap(method:string):Function {
+  protected wrap(method:string):Function {
     if (this[method].length === 4) {
       return (err, req, res, next) => this[method](err, req, res, next)
     }
@@ -55,6 +53,7 @@ abstract class BaseController implements server.core.IAbstractController {
   }
 
   abstract path():string;
+  public basePath:string = '';
 }
 
 export = BaseController

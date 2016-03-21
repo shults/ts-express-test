@@ -18,10 +18,10 @@ module server {
     }
 
     export interface IControllerConfig {
-      httpMethod: string,
-      method: string,
-      pathPrefix? : string
-      pathSuffix? : string
+      httpMethod: string;
+      method: string;
+      pathPrefix? : string;
+      pathSuffix? : string;
     }
 
   }
